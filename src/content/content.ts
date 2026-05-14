@@ -61,28 +61,24 @@ export const pillars = [
   {
     id: "01",
     title: "Prompt Engineering",
-    geometry: "torus" as const,
     description:
       "Write prompts that ship. From zero-shot to chain-of-thought, learn the patterns top AI engineers use to extract reliable, production-grade output.",
   },
   {
     id: "02",
     title: "ChatGPT Mastery",
-    geometry: "icosahedron" as const,
     description:
       "Move beyond casual use. Build custom GPTs, automate workflows, and turn ChatGPT into a force-multiplier for your work and business.",
   },
   {
     id: "03",
-    title: "MidJourney & Visuals",
-    geometry: "dodecahedron" as const,
+    title: "MidJourney & Visual AI",
     description:
       "Generate brand-grade visuals on demand. Master parameters, style references, and the full creative pipeline from prompt to print.",
   },
   {
     id: "04",
     title: "Vibe Coding",
-    geometry: "octahedron" as const,
     description:
       "Build real software with AI as your co-pilot. Cursor, Claude Code, and the new way to ship products without a traditional engineering team.",
   },
@@ -265,11 +261,11 @@ export const faq = [
   },
   {
     q: "How much time per week?",
-    a: "Most students finish in 4–6 weeks at about 3 hours per week. The whole bootcamp is self-paced, so you can binge it in a weekend or stretch it over months. Lifetime access means there's no deadline.",
+    a: "Plan for about 3 hours per week. The whole bootcamp is self-paced — binge it in a weekend, stretch it over months, or come back to it whenever. Lifetime access means there's no deadline.",
   },
   {
-    q: "What if I can't keep up with the cohort?",
-    a: "There's no cohort. The Complete AI Bootcamp is fully self-paced. You start when you want, you finish when you want, and you keep access for life.",
+    q: "What if I fall behind?",
+    a: "There's no cohort and no deadline. The Complete AI Bootcamp is fully self-paced — you start when you want, you finish when you want, and you keep access for life.",
   },
   {
     q: "Do you offer refunds?",
@@ -288,7 +284,7 @@ export const faq = [
     a: "No. Everything runs in the browser — ChatGPT, MidJourney, Cursor (which works on any modern laptop), and Claude. A basic laptop with a stable internet connection is all you need.",
   },
   {
-    q: "What happens after the 6 weeks?",
+    q: "What happens after I finish?",
     a: "Lifetime access stays. You keep the videos, prompt libraries, community, and every future update we ship — at no extra cost. Many students dip back in months later as new modules launch.",
   },
 ];

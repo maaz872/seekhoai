@@ -26,7 +26,6 @@ export function Pillars() {
               id={p.id}
               title={p.title}
               description={p.description}
-              geometry={p.geometry}
             />
           ))}
         </Reveal>

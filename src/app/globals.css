@@ -53,6 +53,51 @@
   .hairline {
     @apply h-px w-full bg-border-subtle;
   }
+
+  .hero-mesh {
+    background:
+      radial-gradient(ellipse 80% 60% at 78% 22%, rgba(255, 107, 53, 0.4), transparent 55%),
+      radial-gradient(ellipse 70% 70% at 18% 78%, rgba(74, 158, 255, 0.25), transparent 60%),
+      radial-gradient(ellipse 100% 100% at 50% 50%, rgba(255, 176, 132, 0.06), transparent 70%);
+    background-position:
+      78% 22%,
+      18% 78%,
+      50% 50%;
+  }
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(-60px);
+    opacity: 1;
+  }
+}
+
+@keyframes mesh-shift {
+  0%,
+  100% {
+    background-position:
+      78% 22%,
+      18% 78%,
+      50% 50%;
+  }
+  50% {
+    background-position:
+      82% 18%,
+      14% 82%,
+      50% 50%;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-mesh {
+    animation: mesh-shift 24s ease-in-out infinite;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

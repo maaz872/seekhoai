@@ -1,22 +1,17 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import { Play, Star } from "lucide-react";
 import { hero } from "@/content/content";
 import { Button } from "@/components/ui/Button";
 import { EmailCaptureForm } from "@/components/forms/EmailCaptureForm";
-
-const HeroScene = dynamic(
-  () => import("./HeroScene").then((m) => m.HeroScene),
-  { ssr: false, loading: () => null },
-);
+import { HeroBackground } from "./HeroBackground";
 
 export function Hero() {
   return (
-    <section id="hero" className="relative isolate flex min-h-[100svh] items-center overflow-hidden">
-      {/* 3D scene */}
-      <HeroScene />
+    <section id="hero" className="relative isolate flex min-h-[100svh] items-center overflow-hidden bg-base">
+      {/* Background: mesh gradient + animated SVG blobs + drifting particles */}
+      <HeroBackground />
 
       {/* Dark gradient mask behind text */}
       <div
