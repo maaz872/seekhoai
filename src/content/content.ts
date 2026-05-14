@@ -61,54 +61,26 @@ export const pillars = [
   {
     id: "01",
     title: "Prompt Engineering",
-    tagline: "The foundation of every AI workflow",
     description:
       "Write prompts that ship. From zero-shot to chain-of-thought, learn the patterns top AI engineers use to extract reliable, production-grade output.",
-    bullets: [
-      "Master zero-shot, few-shot, and chain-of-thought patterns",
-      "Build a reusable prompt library for your work",
-      "Debug and improve prompts systematically",
-      "Extract reliable, production-grade output",
-    ],
   },
   {
     id: "02",
     title: "ChatGPT Mastery",
-    tagline: "From casual user to power user",
     description:
       "Move beyond casual use. Build custom GPTs, automate workflows, and turn ChatGPT into a force-multiplier for your work and business.",
-    bullets: [
-      "Build Custom GPTs end-to-end for specific workflows",
-      "Automate routine tasks with ChatGPT and APIs",
-      "Move from casual prompts to power-user workflows",
-      "Turn ChatGPT into a force-multiplier for your work",
-    ],
   },
   {
     id: "03",
     title: "MidJourney & Visual AI",
-    tagline: "Generate brand-grade visuals on demand",
     description:
       "Generate brand-grade visuals on demand. Master parameters, style references, and the full creative pipeline from prompt to print.",
-    bullets: [
-      "Master MidJourney parameters and the syntax cheat sheet",
-      "Use style references for consistent visual identity",
-      "Compose brand-grade output with intentional light and color",
-      "Run the full pipeline from brief to print-ready delivery",
-    ],
   },
   {
     id: "04",
     title: "Vibe Coding",
-    tagline: "Ship software without an engineering team",
     description:
       "Build real software with AI as your co-pilot. Cursor, Claude Code, and the new way to ship products without a traditional engineering team.",
-    bullets: [
-      "Set up Cursor and Claude Code as your dev environment",
-      "Ship full features by directing the AI, not typing every line",
-      "Read AI-written code critically and catch its mistakes",
-      "Deploy to the web in an afternoon, solo",
-    ],
   },
 ];
 
