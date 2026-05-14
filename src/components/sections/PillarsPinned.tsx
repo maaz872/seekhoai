@@ -8,19 +8,20 @@ import {
   useTransform,
 } from "framer-motion";
 import type { MotionValue } from "framer-motion";
-import { useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { pillars } from "@/content/content";
 
 type Pillar = (typeof pillars)[number];
 
 const TOTAL = pillars.length;
 
-// [in_start, in_full, out_start, out_full] per card across scrollYProgress 0→1.
+// Per-card scroll ranges [in_start, in_full, out_start, out_full] across scrollYProgress 0→1.
+// Widened stable phases + tighter transition windows for a calmer scroll feel.
 const CARD_RANGES: Array<[number, number, number, number]> = [
-  [-0.01, 0.0, 0.22, 0.28],
-  [0.22, 0.28, 0.47, 0.53],
-  [0.47, 0.53, 0.72, 0.78],
-  [0.72, 0.78, 1.0, 1.01],
+  [0.02, 0.08, 0.2, 0.26],
+  [0.26, 0.32, 0.44, 0.5],
+  [0.5, 0.56, 0.68, 0.74],
+  [0.74, 0.8, 1.0, 1.01],
 ];
 
 export function PillarsPinned() {
@@ -37,10 +38,15 @@ function PillarsScroll() {
     offset: ["start start", "end end"],
   });
 
+  // Active index — useTransform breakpoints align with each card's stable phase, then round.
+  const activeIndexMV = useTransform(
+    scrollYProgress,
+    [0, 0.14, 0.38, 0.62, 0.87, 1],
+    [0, 0, 1, 2, 3, 3],
+  );
   const [activeIndex, setActiveIndex] = useState(0);
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    const next =
-      latest < 0.28 ? 0 : latest < 0.53 ? 1 : latest < 0.78 ? 2 : 3;
+  useMotionValueEvent(activeIndexMV, "change", (latest) => {
+    const next = Math.round(latest);
     setActiveIndex((prev) => (prev === next ? prev : next));
   });
 
@@ -50,22 +56,24 @@ function PillarsScroll() {
     <section
       ref={sectionRef}
       id="pillars"
-      className="relative h-[400vh] md:h-[500vh]"
+      className="relative h-[700vh] md:h-[800vh]"
     >
-      <div className="sticky top-0 h-screen overflow-hidden">
-        {/* Heading */}
-        <header className="absolute left-1/2 top-[14vh] z-10 w-full -translate-x-1/2 px-6 text-center md:px-10">
-          <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent-warm">
+      <div className="sticky top-0 flex h-screen flex-col overflow-hidden">
+        <BackgroundLayer />
+
+        {/* Region 1: heading */}
+        <div className="relative z-10 px-6 pb-8 pt-24 text-center">
+          <div className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-accent-warm">
             [ THE FOUR PILLARS ]
-          </p>
-          <h2 className="mt-3 font-display text-display-lg font-medium text-text-primary">
+          </div>
+          <h2 className="font-display text-3xl font-bold text-text-primary md:text-5xl">
             Four skills. One journey.
           </h2>
-        </header>
+        </div>
 
-        {/* Card stage */}
-        <div className="flex h-full items-center justify-center px-6 md:px-10">
-          <div className="relative h-[50vh] w-full max-w-2xl">
+        {/* Region 2: card stage */}
+        <div className="relative z-10 flex flex-1 items-center justify-center px-6">
+          <div className="relative h-[60vh] max-h-[520px] w-full max-w-2xl">
             {pillars.map((p, i) => (
               <PillarCardSlide
                 key={p.id}
@@ -77,16 +85,16 @@ function PillarsScroll() {
           </div>
         </div>
 
-        {/* Scroll hint */}
+        {/* Region 3: scroll hint */}
         <motion.div
           style={{ opacity: hintOpacity }}
-          className="absolute bottom-[5vh] left-1/2 z-10 flex -translate-x-1/2 items-center gap-3"
+          className="relative z-10 flex items-center justify-center gap-3 pb-8"
         >
-          <span className="h-px w-12 bg-border-subtle" />
+          <span className="h-px w-10 bg-border-subtle" />
           <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-text-tertiary">
-            SCROLL ↓ CONTINUE
+            SCROLL · CONTINUE
           </span>
-          <span className="h-px w-12 bg-border-subtle" />
+          <span className="h-px w-10 bg-border-subtle" />
         </motion.div>
 
         {/* Side rail (md+) */}
@@ -202,14 +210,114 @@ function SideRail({ activeIndex }: { activeIndex: number }) {
   );
 }
 
+interface Particle {
+  left: number;
+  top: number;
+  size: number;
+  delay: number;
+  duration: number;
+}
+
+const PARTICLE_COUNT = 15;
+
+function makeParticles(): Particle[] {
+  return Array.from({ length: PARTICLE_COUNT }, () => ({
+    left: Math.random() * 100,
+    top: 40 + Math.random() * 60,
+    size: 3 + Math.random() * 2,
+    delay: -Math.random() * 14,
+    duration: 10 + Math.random() * 4,
+  }));
+}
+
+function BackgroundLayer() {
+  const reduced = useReducedMotion();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const particles = useMemo<Particle[]>(
+    () => (mounted ? makeParticles() : []),
+    [mounted],
+  );
+
+  return (
+    <div
+      aria-hidden
+      className="pointer-events-none absolute inset-0 overflow-hidden"
+    >
+      {/* Mesh gradient — different positions than hero so it feels related but not duplicate */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background: `
+            radial-gradient(ellipse 70% 50% at 85% 30%, rgba(255,107,53,0.22), transparent 55%),
+            radial-gradient(ellipse 60% 60% at 12% 80%, rgba(74,158,255,0.16), transparent 60%),
+            radial-gradient(ellipse 100% 80% at 50% 50%, rgba(255,176,132,0.04), transparent 70%)
+          `,
+        }}
+      />
+
+      {/* Rotating organic blob — smaller than hero's */}
+      <motion.svg
+        viewBox="0 0 600 600"
+        width="600"
+        height="600"
+        className="absolute opacity-60"
+        style={{
+          right: "-120px",
+          top: "50%",
+          translateY: "-50%",
+          filter: "blur(40px)",
+        }}
+        animate={reduced ? undefined : { rotate: 360 }}
+        transition={
+          reduced
+            ? undefined
+            : { duration: 90, repeat: Infinity, ease: "linear" }
+        }
+      >
+        <path
+          d="M300,60 C420,60 520,170 520,300 C520,430 420,540 300,540 C180,540 80,430 80,300 C80,170 180,60 300,60 Z"
+          fill="#FF6B35"
+          opacity="0.22"
+        />
+        <path
+          d="M320,110 C440,130 510,250 490,360 C470,480 350,540 230,510 C130,480 80,360 110,250 C140,160 220,90 320,110 Z"
+          fill="#4A9EFF"
+          opacity="0.14"
+        />
+      </motion.svg>
+
+      {/* Floating particles (CSS keyframe `drift` defined in globals.css) */}
+      {particles.map((p, i) => (
+        <span
+          key={i}
+          className="absolute rounded-full"
+          style={{
+            left: `${p.left}%`,
+            top: `${p.top}%`,
+            width: `${p.size}px`,
+            height: `${p.size}px`,
+            backgroundColor: "rgba(255, 176, 132, 0.35)",
+            boxShadow: "0 0 8px rgba(255, 176, 132, 0.6)",
+            animation: reduced
+              ? "none"
+              : `drift ${p.duration}s ease-in-out ${p.delay}s infinite`,
+            opacity: 0,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
 function PillarsFallback() {
   return (
     <section id="pillars" className="relative py-24 md:py-40">
       <div className="mx-auto max-w-3xl px-6 md:px-10">
-        <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent-warm">
+        <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent-warm">
           [ THE FOUR PILLARS ]
         </p>
-        <h2 className="mt-3 font-display text-display-lg font-medium text-text-primary">
+        <h2 className="mt-3 font-display text-3xl font-bold text-text-primary md:text-5xl">
           Four skills. One journey.
         </h2>
 
