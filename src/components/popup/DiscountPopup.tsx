@@ -116,14 +116,16 @@ export function DiscountPopup() {
             className="relative max-h-[90vh] w-full max-w-2xl overflow-y-auto overflow-x-hidden rounded-3xl border border-border-strong bg-elevated shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              className="absolute right-4 top-4 z-10 grid size-9 place-items-center rounded-full border border-border-subtle bg-base/60 text-text-secondary backdrop-blur-sm transition-colors hover:text-text-primary"
-              aria-label="Close"
-            >
-              <X className="size-4" />
-            </button>
+            <div className="pointer-events-none sticky top-0 z-20 h-0">
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                className="pointer-events-auto absolute right-4 top-4 grid size-9 place-items-center rounded-full border border-border-subtle bg-base/60 text-text-secondary backdrop-blur-sm transition-colors hover:text-text-primary"
+                aria-label="Close"
+              >
+                <X className="size-4" />
+              </button>
+            </div>
 
             <div className="flex flex-col">
               <div className="px-6 pt-4 md:px-10 md:pt-6">
