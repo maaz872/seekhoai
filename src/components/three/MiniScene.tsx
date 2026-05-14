@@ -1,7 +1,6 @@
 "use client";
 
-import { useFrame } from "@react-three/fiber";
-import { View, PerspectiveCamera } from "@react-three/drei";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
 import type { Mesh } from "three";
 
@@ -52,12 +51,18 @@ export function MiniScene({ kind, className }: Props) {
   }, []);
 
   return (
-    <View className={className}>
-      <PerspectiveCamera makeDefault position={[0, 0, 3.6]} fov={45} />
-      <ambientLight intensity={0.3} />
-      <directionalLight position={[3, 3, 2]} intensity={1.4} color="#ff8855" />
-      <directionalLight position={[-3, -2, 1]} intensity={0.45} color="#4a9eff" />
-      <Shape kind={kind} reducedMotion={reducedMotion} />
-    </View>
+    <div className={className}>
+      <Canvas
+        dpr={[1, 1.5]}
+        camera={{ position: [0, 0, 3.6], fov: 45 }}
+        gl={{ antialias: true, alpha: true }}
+        style={{ background: "transparent" }}
+      >
+        <ambientLight intensity={0.3} />
+        <directionalLight position={[3, 3, 2]} intensity={1.4} color="#ff8855" />
+        <directionalLight position={[-3, -2, 1]} intensity={0.45} color="#4a9eff" />
+        <Shape kind={kind} reducedMotion={reducedMotion} />
+      </Canvas>
+    </div>
   );
 }

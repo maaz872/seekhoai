@@ -1,10 +1,16 @@
 "use client";
 
-import { useFrame } from "@react-three/fiber";
-import { View, PerspectiveCamera } from "@react-three/drei";
-import { useEffect, useRef, useState } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import {
+  EffectComposer,
+  Bloom,
+  ChromaticAberration,
+  Vignette,
+} from "@react-three/postprocessing";
+import { BlendFunction } from "postprocessing";
+import { useEffect, useRef, useState, Suspense } from "react";
+import { Vector2 } from "three";
 import { useScroll, type MotionValue } from "framer-motion";
-import type { PerspectiveCamera as PerspectiveCameraImpl } from "three";
 import { TorusKnot } from "@/components/three/TorusKnot";
 import { ParticleField } from "@/components/three/ParticleField";
 
@@ -15,18 +21,57 @@ function CameraDolly({
   scrollProgress: MotionValue<number>;
   reducedMotion: boolean;
 }) {
-  const cameraRef = useRef<PerspectiveCameraImpl>(null);
+  const { camera } = useThree();
   useFrame(() => {
-    const cam = cameraRef.current;
-    if (!cam) return;
     if (reducedMotion) {
-      cam.position.z = 6;
+      camera.position.z = 6;
       return;
     }
     const targetZ = 6 + scrollProgress.get() * 6; // z: 6 → 12
-    cam.position.z += (targetZ - cam.position.z) * 0.05;
+    camera.position.z += (targetZ - camera.position.z) * 0.05;
   });
-  return <PerspectiveCamera ref={cameraRef} makeDefault position={[0, 0, 6]} fov={50} />;
+  return null;
+}
+
+function SceneContents({
+  mouse,
+  scrollProgress,
+  reducedMotion,
+  isMobile,
+}: {
+  mouse: { x: number; y: number };
+  scrollProgress: MotionValue<number>;
+  reducedMotion: boolean;
+  isMobile: boolean;
+}) {
+  return (
+    <>
+      <color attach="background" args={["#0a0e1a"]} />
+      <fog attach="fog" args={["#1a1024", 8, 20]} />
+
+      <ambientLight intensity={0.15} />
+      <directionalLight position={[6, 4, 4]} intensity={1.2} color="#ff8855" />
+      <directionalLight position={[-5, -3, -2]} intensity={0.6} color="#4a9eff" />
+
+      <CameraDolly scrollProgress={scrollProgress} reducedMotion={reducedMotion} />
+
+      <TorusKnot mouse={mouse} scrollProgress={scrollProgress} reducedMotion={reducedMotion} />
+      <ParticleField count={isMobile ? 200 : 800} mouse={mouse} reducedMotion={reducedMotion} />
+
+      {!isMobile && (
+        <EffectComposer>
+          <Bloom intensity={0.8} luminanceThreshold={0.6} luminanceSmoothing={0.3} radius={0.6} />
+          <ChromaticAberration
+            offset={new Vector2(0.0006, 0.0006)}
+            blendFunction={BlendFunction.NORMAL}
+            radialModulation={false}
+            modulationOffset={0}
+          />
+          <Vignette eskil={false} offset={0.25} darkness={0.55} />
+        </EffectComposer>
+      )}
+    </>
+  );
 }
 
 export function HeroScene() {
@@ -62,21 +107,25 @@ export function HeroScene() {
   }, []);
 
   return (
-    <View className="absolute inset-0" aria-hidden>
-      <CameraDolly scrollProgress={scrollYProgress} reducedMotion={reducedMotion} />
-      <ambientLight intensity={0.15} />
-      <directionalLight position={[6, 4, 4]} intensity={1.2} color="#ff8855" />
-      <directionalLight position={[-5, -3, -2]} intensity={0.6} color="#4a9eff" />
-      <TorusKnot
-        mouse={mouse.current}
-        scrollProgress={scrollYProgress}
-        reducedMotion={reducedMotion}
-      />
-      <ParticleField
-        count={isMobile ? 200 : 800}
-        mouse={mouse.current}
-        reducedMotion={reducedMotion}
-      />
-    </View>
+    <div
+      className="absolute inset-0"
+      style={{ transform: "translateZ(0)", willChange: "transform" }}
+      aria-hidden
+    >
+      <Canvas
+        dpr={isMobile ? [1, 1] : [1, 1.5]}
+        camera={{ position: [0, 0, 6], fov: 50 }}
+        gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}
+      >
+        <Suspense fallback={null}>
+          <SceneContents
+            mouse={mouse.current}
+            scrollProgress={scrollYProgress}
+            reducedMotion={reducedMotion}
+            isMobile={isMobile}
+          />
+        </Suspense>
+      </Canvas>
+    </div>
   );
 }

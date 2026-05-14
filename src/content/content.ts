@@ -53,7 +53,6 @@ export const socialProof = {
     "Product Hunt",
     "IndieHackers",
     "Pakistan Tech Summit",
-    "DeepLearnHQ",
   ],
   caption: "AS FEATURED ON",
 };
@@ -75,7 +74,7 @@ export const pillars = [
   },
   {
     id: "03",
-    title: "MidJourney & Visual AI",
+    title: "MidJourney & Visuals",
     geometry: "dodecahedron" as const,
     description:
       "Generate brand-grade visuals on demand. Master parameters, style references, and the full creative pipeline from prompt to print.",

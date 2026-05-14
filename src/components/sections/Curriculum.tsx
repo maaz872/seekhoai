@@ -10,11 +10,11 @@ export function Curriculum() {
     number: `MODULE ${m.number}`,
     title: m.title,
     body: (
-      <ul className="space-y-2.5 text-text-secondary">
+      <ul className="space-y-2.5">
         {m.lessons.map((lesson, i) => (
           <li key={i} className="flex items-start gap-3">
-            <span className="mt-2 inline-block size-1 shrink-0 rounded-full bg-accent-warm" />
-            <span className="text-base">{lesson}</span>
+            <span className="mt-2 inline-block size-1.5 shrink-0 rounded-full bg-accent-warm-2" />
+            <span className="flex-1 text-base text-text-secondary">{lesson}</span>
           </li>
         ))}
       </ul>
