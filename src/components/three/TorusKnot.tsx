@@ -4,12 +4,13 @@ import { useRef } from "react";
 import { useFrame, type ThreeElements } from "@react-three/fiber";
 import type { Mesh } from "three";
 import { MathUtils } from "three";
+import type { MotionValue } from "framer-motion";
 
 interface Props extends Omit<ThreeElements["mesh"], "ref"> {
   /** Normalized mouse position, range [-1, 1] for both axes */
   mouse: { x: number; y: number };
-  /** 0..1 scroll progress through the page */
-  scrollProgress: number;
+  /** Lenis-driven smooth scroll progress, 0..1 across the page. Read inside useFrame via .get(). */
+  scrollProgress: MotionValue<number>;
   /** Reduce motion: if true, locks rotation to a static pose */
   reducedMotion?: boolean;
 }
@@ -29,12 +30,11 @@ export function TorusKnot({ mouse, scrollProgress, reducedMotion = false, ...res
     ref.current.rotation.x += delta * 0.05;
 
     // Scroll-driven additional rotation (0.5 turn over full page)
-    const scrollRot = scrollProgress * Math.PI;
+    const scrollRot = scrollProgress.get() * Math.PI;
 
     // Mouse tilt — damped lerp toward target up to ~8 degrees
     const targetX = mouse.y * MathUtils.degToRad(8);
     const targetY = mouse.x * MathUtils.degToRad(8) + scrollRot;
-    ref.current.rotation.x = MathUtils.lerp(ref.current.rotation.x, targetX + ref.current.rotation.x * 0.0, 0.05) + ref.current.rotation.x * 0.0;
     ref.current.rotation.x += (targetX - ref.current.rotation.x) * 0.05;
     ref.current.rotation.y += (targetY - ref.current.rotation.y) * 0.05;
   });

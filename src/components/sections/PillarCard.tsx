@@ -31,9 +31,7 @@ export function PillarCard({ id, title, description, geometry }: Props) {
         <span className="font-mono text-xs uppercase tracking-[0.18em] text-text-tertiary">
           PILLAR {id}
         </span>
-        <div className="size-[120px]">
-          <MiniScene kind={geometry} />
-        </div>
+        <MiniScene kind={geometry} className="size-[120px]" />
       </div>
 
       <div>

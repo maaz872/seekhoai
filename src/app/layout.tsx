@@ -4,6 +4,7 @@ import "./globals.css";
 import { LenisProvider } from "@/components/motion/LenisProvider";
 import { CouponProvider } from "@/context/CouponContext";
 import { DiscountPopup } from "@/components/popup/DiscountPopup";
+import { SharedCanvas } from "@/components/three/SharedCanvas";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -73,6 +74,7 @@ export default function RootLayout({
       <body className="bg-base text-text-primary">
         <CouponProvider>
           <LenisProvider>
+            <SharedCanvas />
             {children}
             <DiscountPopup />
           </LenisProvider>

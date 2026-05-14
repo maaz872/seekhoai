@@ -8,17 +8,17 @@ import { type Points as ThreePoints, AdditiveBlending } from "three";
 interface Props {
   hovered: boolean;
   reducedMotion: boolean;
+  count?: number;
 }
 
 /**
- * Particle aura: ~120 small points orbiting the card on a vertical axis.
- * Drifts faster on hover. Plus drei <Sparkles/> for periodic sparkle pulses.
+ * Particle aura orbiting the card on a vertical axis. Drifts faster on hover.
+ * Plus drei <Sparkles/> for periodic sparkle pulses.
  */
-export function CouponParticles({ hovered, reducedMotion }: Props) {
+export function CouponParticles({ hovered, reducedMotion, count = 120 }: Props) {
   const ref = useRef<ThreePoints>(null);
 
   const positions = useMemo(() => {
-    const count = 120;
     const arr = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
       const r = 2.2 + Math.random() * 1.6;
@@ -29,7 +29,7 @@ export function CouponParticles({ hovered, reducedMotion }: Props) {
       arr[i * 3 + 2] = r * Math.sin(theta);
     }
     return arr;
-  }, []);
+  }, [count]);
 
   useFrame((_, delta) => {
     if (!ref.current || reducedMotion) return;

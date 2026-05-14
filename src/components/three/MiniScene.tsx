@@ -1,7 +1,8 @@
 "use client";
 
-import { Canvas, useFrame } from "@react-three/fiber";
-import { useRef } from "react";
+import { useFrame } from "@react-three/fiber";
+import { View, PerspectiveCamera } from "@react-three/drei";
+import { useEffect, useRef, useState } from "react";
 import type { Mesh } from "three";
 
 type GeometryKind = "torus" | "icosahedron" | "dodecahedron" | "octahedron";
@@ -34,22 +35,29 @@ function Shape({ kind, reducedMotion }: { kind: GeometryKind; reducedMotion: boo
   );
 }
 
-export function MiniScene({ kind }: { kind: GeometryKind }) {
-  const reducedMotion =
-    typeof window !== "undefined" &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+interface Props {
+  kind: GeometryKind;
+  className?: string;
+}
+
+export function MiniScene({ kind, className }: Props) {
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReducedMotion(mq.matches);
+    const onChange = () => setReducedMotion(mq.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
 
   return (
-    <Canvas
-      dpr={[1, 1.5]}
-      camera={{ position: [0, 0, 3.6], fov: 45 }}
-      gl={{ antialias: true, alpha: true }}
-      style={{ background: "transparent" }}
-    >
+    <View className={className}>
+      <PerspectiveCamera makeDefault position={[0, 0, 3.6]} fov={45} />
       <ambientLight intensity={0.3} />
       <directionalLight position={[3, 3, 2]} intensity={1.4} color="#ff8855" />
       <directionalLight position={[-3, -2, 1]} intensity={0.45} color="#4a9eff" />
       <Shape kind={kind} reducedMotion={reducedMotion} />
-    </Canvas>
+    </View>
   );
 }

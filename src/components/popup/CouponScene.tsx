@@ -2,7 +2,7 @@
 
 import { Canvas } from "@react-three/fiber";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { CouponCard } from "./CouponCard";
 import { CouponParticles } from "./CouponParticles";
 
@@ -12,6 +12,18 @@ interface Props {
 
 export function CouponScene({ reducedMotion }: Props) {
   const [hovered, setHovered] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 768px)");
+    setIsMobile(mq.matches);
+    const onChange = () => setIsMobile(mq.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+
+  const enableBloom = !reducedMotion && !isMobile;
+  const dpr: [number, number] = isMobile ? [1, 1] : [1, 1.5];
 
   return (
     <div
@@ -19,21 +31,24 @@ export function CouponScene({ reducedMotion }: Props) {
       aria-hidden
     >
       <Canvas
-        dpr={[1, 1.5]}
+        dpr={dpr}
         camera={{ position: [0, 0, 4.6], fov: 45 }}
         gl={{ antialias: true, alpha: true }}
         style={{ touchAction: "none" }}
       >
         <Suspense fallback={null}>
-          {/* Lighting */}
           <ambientLight intensity={0.2} />
           <directionalLight position={[4, 4, 3]} intensity={1.4} color="#ff8855" />
           <directionalLight position={[-3, -3, 1]} intensity={0.5} color="#4a9eff" />
 
           <CouponCard hovered={hovered} onHover={setHovered} reducedMotion={reducedMotion} />
-          <CouponParticles hovered={hovered} reducedMotion={reducedMotion} />
+          <CouponParticles
+            hovered={hovered}
+            reducedMotion={reducedMotion}
+            count={isMobile ? 60 : 120}
+          />
 
-          {!reducedMotion && (
+          {enableBloom && (
             <EffectComposer>
               <Bloom intensity={1.0} luminanceThreshold={0.55} luminanceSmoothing={0.3} radius={0.7} />
             </EffectComposer>
