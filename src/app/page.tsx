@@ -1,6 +1,5 @@
 import { Nav } from "@/components/nav/Nav";
 import { Hero } from "@/components/hero/Hero";
-import { SocialProof } from "@/components/sections/SocialProof";
 import { Pillars } from "@/components/sections/Pillars";
 import { Curriculum } from "@/components/sections/Curriculum";
 import { WhoFor } from "@/components/sections/WhoFor";
@@ -16,7 +15,6 @@ export default function Page() {
     <main className="relative">
       <Nav />
       <Hero />
-      <SocialProof />
       <Pillars />
       <Curriculum />
       <WhoFor />

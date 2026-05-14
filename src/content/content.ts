@@ -46,17 +46,6 @@ export const hero = {
   },
 };
 
-export const socialProof = {
-  labels: [
-    "Udemy",
-    "Coursera",
-    "Product Hunt",
-    "IndieHackers",
-    "Pakistan Tech Summit",
-  ],
-  caption: "AS FEATURED ON",
-};
-
 export const pillars = [
   {
     id: "01",
