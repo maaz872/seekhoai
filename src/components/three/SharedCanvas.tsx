@@ -38,7 +38,11 @@ export function SharedCanvas() {
   if (!mounted) return null;
 
   return (
-    <div className="pointer-events-none fixed inset-0 -z-10" aria-hidden>
+    <div
+      className="pointer-events-none fixed inset-0 -z-10"
+      style={{ transform: "translateZ(0)", willChange: "transform" }}
+      aria-hidden
+    >
       <Canvas
         dpr={dpr}
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}

@@ -15,7 +15,11 @@ export function Pricing() {
   const ctaLabel = applied ? `Enroll Now — ${formatted}` : pricing.cta.label;
 
   return (
-    <section id="pricing" className="relative py-24 md:py-40">
+    <section
+      id="pricing"
+      className="relative py-24 md:py-40"
+      style={{ contentVisibility: "auto", containIntrinsicSize: "800px 1200px" }}
+    >
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10 bg-radial-warm opacity-40"

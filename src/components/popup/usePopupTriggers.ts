@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useScroll, useMotionValueEvent } from "framer-motion";
 
 const SESSION_KEY = "seekhoai_popup_seen";
 
@@ -16,11 +17,23 @@ const SESSION_KEY = "seekhoai_popup_seen";
  */
 export function usePopupTriggers() {
   const [shouldShow, setShouldShow] = useState(false);
+  const firedRef = useRef(false);
+  const { scrollYProgress } = useScroll();
+
+  const fire = useCallback(() => {
+    if (firedRef.current) return;
+    firedRef.current = true;
+    try {
+      sessionStorage.setItem(SESSION_KEY, "1");
+    } catch {
+      /* ignore */
+    }
+    setShouldShow(true);
+  }, []);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    // Debug helper
     (window as unknown as { __resetPopup?: () => void }).__resetPopup = () => {
       try {
         sessionStorage.removeItem(SESSION_KEY);
@@ -30,41 +43,18 @@ export function usePopupTriggers() {
       }
     };
 
-    // If already shown this session, skip everything.
     try {
-      if (sessionStorage.getItem(SESSION_KEY) === "1") return;
+      if (sessionStorage.getItem(SESSION_KEY) === "1") {
+        firedRef.current = true;
+        return;
+      }
     } catch {
       /* ignore */
     }
 
-    const isTouch = window.matchMedia("(pointer: coarse)").matches;
-    let fired = false;
-
-    const fire = () => {
-      if (fired) return;
-      fired = true;
-      try {
-        sessionStorage.setItem(SESSION_KEY, "1");
-      } catch {
-        /* ignore */
-      }
-      setShouldShow(true);
-      cleanup();
-    };
-
-    // 1. Time trigger
     const timeId = window.setTimeout(fire, 35_000);
 
-    // 2. Scroll trigger
-    const onScroll = () => {
-      const total = document.documentElement.scrollHeight - window.innerHeight;
-      if (total <= 0) return;
-      const pct = window.scrollY / total;
-      if (pct >= 0.6) fire();
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-
-    // 3. Exit intent (desktop only)
+    const isTouch = window.matchMedia("(pointer: coarse)").matches;
     let onMouseOut: ((e: MouseEvent) => void) | null = null;
     if (!isTouch) {
       onMouseOut = (e: MouseEvent) => {
@@ -73,14 +63,15 @@ export function usePopupTriggers() {
       document.addEventListener("mouseout", onMouseOut);
     }
 
-    function cleanup() {
+    return () => {
       window.clearTimeout(timeId);
-      window.removeEventListener("scroll", onScroll);
       if (onMouseOut) document.removeEventListener("mouseout", onMouseOut);
-    }
+    };
+  }, [fire]);
 
-    return cleanup;
-  }, []);
+  useMotionValueEvent(scrollYProgress, "change", (v) => {
+    if (v >= 0.6) fire();
+  });
 
   return shouldShow;
 }

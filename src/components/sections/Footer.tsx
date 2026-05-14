@@ -2,7 +2,10 @@ import { brand, footer } from "@/content/content";
 
 export function Footer() {
   return (
-    <footer className="border-t border-border-subtle bg-base">
+    <footer
+      className="border-t border-border-subtle bg-base"
+      style={{ contentVisibility: "auto", containIntrinsicSize: "800px 1200px" }}
+    >
       <div className="container-content py-16 md:py-24">
         <div className="grid grid-cols-2 gap-10 md:grid-cols-6">
           <div className="col-span-2 md:col-span-2">

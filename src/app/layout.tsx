@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Sora, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import { LenisProvider } from "@/components/motion/LenisProvider";
 import { CouponProvider } from "@/context/CouponContext";
 import { DiscountPopup } from "@/components/popup/DiscountPopup";
 import { SharedCanvas } from "@/components/three/SharedCanvas";
@@ -73,11 +72,9 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} ${sora.variable} ${mono.variable}`}>
       <body className="bg-base text-text-primary">
         <CouponProvider>
-          <LenisProvider>
-            <SharedCanvas />
-            {children}
-            <DiscountPopup />
-          </LenisProvider>
+          <SharedCanvas />
+          {children}
+          <DiscountPopup />
         </CouponProvider>
       </body>
     </html>

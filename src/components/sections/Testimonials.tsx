@@ -6,7 +6,10 @@ import { testimonials } from "@/content/content";
 
 export function Testimonials() {
   return (
-    <section className="relative py-24 md:py-40">
+    <section
+      className="relative py-24 md:py-40"
+      style={{ contentVisibility: "auto", containIntrinsicSize: "800px 1200px" }}
+    >
       <div className="container-content">
         <Reveal className="max-w-3xl">
           <p className="eyebrow">[ STUDENT VOICES ]</p>

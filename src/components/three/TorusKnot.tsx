@@ -9,7 +9,7 @@ import type { MotionValue } from "framer-motion";
 interface Props extends Omit<ThreeElements["mesh"], "ref"> {
   /** Normalized mouse position, range [-1, 1] for both axes */
   mouse: { x: number; y: number };
-  /** Lenis-driven smooth scroll progress, 0..1 across the page. Read inside useFrame via .get(). */
+  /** Scroll progress 0..1 across the page. Read inside useFrame via .get(). */
   scrollProgress: MotionValue<number>;
   /** Reduce motion: if true, locks rotation to a static pose */
   reducedMotion?: boolean;

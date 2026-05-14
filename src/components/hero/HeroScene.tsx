@@ -3,9 +3,8 @@
 import { useFrame } from "@react-three/fiber";
 import { View, PerspectiveCamera } from "@react-three/drei";
 import { useEffect, useRef, useState } from "react";
-import type { MotionValue } from "framer-motion";
+import { useScroll, type MotionValue } from "framer-motion";
 import type { PerspectiveCamera as PerspectiveCameraImpl } from "three";
-import { useSmoothScroll } from "@/components/motion/LenisProvider";
 import { TorusKnot } from "@/components/three/TorusKnot";
 import { ParticleField } from "@/components/three/ParticleField";
 
@@ -34,7 +33,7 @@ export function HeroScene() {
   const mouse = useRef({ x: 0, y: 0 });
   const [reducedMotion, setReducedMotion] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const scrollProgress = useSmoothScroll();
+  const { scrollYProgress } = useScroll();
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -64,13 +63,13 @@ export function HeroScene() {
 
   return (
     <View className="absolute inset-0" aria-hidden>
-      <CameraDolly scrollProgress={scrollProgress} reducedMotion={reducedMotion} />
+      <CameraDolly scrollProgress={scrollYProgress} reducedMotion={reducedMotion} />
       <ambientLight intensity={0.15} />
       <directionalLight position={[6, 4, 4]} intensity={1.2} color="#ff8855" />
       <directionalLight position={[-5, -3, -2]} intensity={0.6} color="#4a9eff" />
       <TorusKnot
         mouse={mouse.current}
-        scrollProgress={scrollProgress}
+        scrollProgress={scrollYProgress}
         reducedMotion={reducedMotion}
       />
       <ParticleField

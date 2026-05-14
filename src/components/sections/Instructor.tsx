@@ -5,7 +5,11 @@ import { instructor } from "@/content/content";
 
 export function Instructor() {
   return (
-    <section id="instructor" className="relative py-24 md:py-40">
+    <section
+      id="instructor"
+      className="relative py-24 md:py-40"
+      style={{ contentVisibility: "auto", containIntrinsicSize: "800px 1200px" }}
+    >
       <div className="container-content">
         <Reveal className="grid grid-cols-1 gap-12 md:grid-cols-12 md:gap-16">
           <div className="md:col-span-7">

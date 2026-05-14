@@ -14,7 +14,10 @@ export function FinalCTA() {
   const label = applied ? `Enroll Now — ${formatted}` : finalCTA.cta.label;
 
   return (
-    <section className="relative overflow-hidden py-32 md:py-48">
+    <section
+      className="relative overflow-hidden py-32 md:py-48"
+      style={{ contentVisibility: "auto", containIntrinsicSize: "800px 1200px" }}
+    >
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10 bg-radial-warm opacity-60"
