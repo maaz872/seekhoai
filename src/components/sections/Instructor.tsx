@@ -2,6 +2,7 @@
 
 import { Reveal } from "@/components/motion/Reveal";
 import { instructor } from "@/content/content";
+import { WithUdemyLinks } from "@/components/ui/UdemyLink";
 
 export function Instructor() {
   return (
@@ -18,7 +19,9 @@ export function Instructor() {
               Meet {instructor.name}.
             </h2>
             <p className="mt-5 text-base text-accent-warm">{instructor.title}</p>
-            <p className="mt-6 max-w-xl text-lg text-text-secondary">{instructor.bio}</p>
+            <p className="mt-6 max-w-xl text-lg text-text-secondary">
+              <WithUdemyLinks text={instructor.bio} />
+            </p>
 
             <dl className="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-4">
               {instructor.stats.map((s) => (

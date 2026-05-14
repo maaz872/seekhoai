@@ -3,12 +3,17 @@
 import { Reveal } from "@/components/motion/Reveal";
 import { Accordion } from "@/components/ui/Accordion";
 import { faq } from "@/content/content";
+import { WithUdemyLinks } from "@/components/ui/UdemyLink";
 
 export function FAQ() {
   const items = faq.map((f, i) => ({
     id: `faq-${i}`,
     title: f.q,
-    body: <p className="text-base text-text-secondary">{f.a}</p>,
+    body: (
+      <p className="text-base text-text-secondary">
+        <WithUdemyLinks text={f.a} />
+      </p>
+    ),
   }));
 
   return (

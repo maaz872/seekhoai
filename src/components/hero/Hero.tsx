@@ -6,6 +6,7 @@ import { hero } from "@/content/content";
 import { Button } from "@/components/ui/Button";
 import { EmailCaptureForm } from "@/components/forms/EmailCaptureForm";
 import { HeroBackground } from "./HeroBackground";
+import { UDEMY_PROFILE_URL, WithUdemyLinks } from "@/components/ui/UdemyLink";
 
 export function Hero() {
   return (
@@ -66,7 +67,9 @@ export function Hero() {
             variant="ghost"
             size="lg"
             icon={<Play className="size-4" fill="currentColor" />}
-            onClick={() => (window.location.hash = "trailer")}
+            onClick={() =>
+              window.open(UDEMY_PROFILE_URL, "_blank", "noopener,noreferrer")
+            }
           >
             {hero.ctas.secondary.label}
           </Button>
@@ -98,7 +101,8 @@ export function Hero() {
           </span>
           <span>
             <strong className="text-text-primary">{hero.trustStrip.rating}</strong> ·{" "}
-            {hero.trustStrip.students} · {hero.trustStrip.featured}
+            {hero.trustStrip.students} ·{" "}
+            <WithUdemyLinks text={hero.trustStrip.featured} />
           </span>
         </motion.div>
       </div>
