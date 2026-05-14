@@ -71,19 +71,23 @@ export function CheckoutForm({ onSuccess, finalPrice }: Props) {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 px-6 pb-8">
       <div className="rounded-2xl border border-border-subtle bg-base/40 p-4 text-sm">
-        <div className="flex items-center justify-between">
-          <span className="text-text-secondary">Complete AI Bootcamp</span>
+        <div className="flex items-center justify-between text-text-secondary">
+          <span>Complete AI Bootcamp</span>
           <span className="font-medium">${pricing.price.toFixed(2)}</span>
         </div>
         {applied && (
-          <div className="mt-2 flex items-center justify-between text-accent-warm">
-            <span>Discount ({code})</span>
-            <span>−${discount.toFixed(2)}</span>
+          <div className="mt-2 flex items-center justify-between">
+            <span className="text-text-secondary">Discount ({code})</span>
+            <span className="font-medium text-accent-warm">
+              −${discount.toFixed(2)}
+            </span>
           </div>
         )}
-        <div className="mt-3 flex items-center justify-between border-t border-border-subtle pt-3 text-base">
-          <span className="font-medium">Total</span>
-          <span className="font-medium">{totalLabel}</span>
+        <div className="mt-3 flex items-baseline justify-between border-t border-white/10 pt-3">
+          <span className="font-medium text-text-primary">Total</span>
+          <span className="font-bold text-2xl text-accent-warm md:text-3xl">
+            {totalLabel}
+          </span>
         </div>
       </div>
 
@@ -150,7 +154,7 @@ export function CheckoutForm({ onSuccess, finalPrice }: Props) {
           type="submit"
           variant="warm"
           size="lg"
-          className="w-full"
+          className="w-full font-semibold"
           disabled={isSubmitting}
         >
           {isSubmitting ? (
