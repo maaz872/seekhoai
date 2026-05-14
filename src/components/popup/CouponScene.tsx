@@ -1,0 +1,45 @@
+"use client";
+
+import { Canvas } from "@react-three/fiber";
+import { EffectComposer, Bloom } from "@react-three/postprocessing";
+import { Suspense, useState } from "react";
+import { CouponCard } from "./CouponCard";
+import { CouponParticles } from "./CouponParticles";
+
+interface Props {
+  reducedMotion: boolean;
+}
+
+export function CouponScene({ reducedMotion }: Props) {
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <div
+      className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-gradient-to-br from-[#11172a] via-[#0a0e1a] to-[#1a1024]"
+      aria-hidden
+    >
+      <Canvas
+        dpr={[1, 1.5]}
+        camera={{ position: [0, 0, 4.6], fov: 45 }}
+        gl={{ antialias: true, alpha: true }}
+        style={{ touchAction: "none" }}
+      >
+        <Suspense fallback={null}>
+          {/* Lighting */}
+          <ambientLight intensity={0.2} />
+          <directionalLight position={[4, 4, 3]} intensity={1.4} color="#ff8855" />
+          <directionalLight position={[-3, -3, 1]} intensity={0.5} color="#4a9eff" />
+
+          <CouponCard hovered={hovered} onHover={setHovered} reducedMotion={reducedMotion} />
+          <CouponParticles hovered={hovered} reducedMotion={reducedMotion} />
+
+          {!reducedMotion && (
+            <EffectComposer>
+              <Bloom intensity={1.0} luminanceThreshold={0.55} luminanceSmoothing={0.3} radius={0.7} />
+            </EffectComposer>
+          )}
+        </Suspense>
+      </Canvas>
+    </div>
+  );
+}
