@@ -16,12 +16,11 @@ type Pillar = (typeof pillars)[number];
 const TOTAL = pillars.length;
 
 // Per-card scroll ranges [in_start, in_full, out_start, out_full] across scrollYProgress 0→1.
-// Widened stable phases + tighter transition windows for a calmer scroll feel.
 const CARD_RANGES: Array<[number, number, number, number]> = [
-  [0.02, 0.08, 0.2, 0.26],
-  [0.26, 0.32, 0.44, 0.5],
-  [0.5, 0.56, 0.68, 0.74],
-  [0.74, 0.8, 1.0, 1.01],
+  [0.0, 0.05, 0.22, 0.27],
+  [0.27, 0.32, 0.47, 0.52],
+  [0.52, 0.57, 0.72, 0.77],
+  [0.77, 0.82, 1.0, 1.01],
 ];
 
 export function PillarsPinned() {
@@ -41,7 +40,7 @@ function PillarsScroll() {
   // Active index — useTransform breakpoints align with each card's stable phase, then round.
   const activeIndexMV = useTransform(
     scrollYProgress,
-    [0, 0.14, 0.38, 0.62, 0.87, 1],
+    [0, 0.13, 0.39, 0.64, 0.89, 1],
     [0, 0, 1, 2, 3, 3],
   );
   const [activeIndex, setActiveIndex] = useState(0);
@@ -56,7 +55,7 @@ function PillarsScroll() {
     <section
       ref={sectionRef}
       id="pillars"
-      className="relative h-[700vh] md:h-[800vh]"
+      className="relative h-[350vh] md:h-[400vh]"
     >
       <div className="sticky top-0 flex h-screen flex-col overflow-hidden">
         <BackgroundLayer />
