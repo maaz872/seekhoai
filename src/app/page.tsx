@@ -1,7 +1,7 @@
 import { Nav } from "@/components/nav/Nav";
 import { Hero } from "@/components/hero/Hero";
 import { SocialProof } from "@/components/sections/SocialProof";
-import { PillarsTimeline } from "@/components/sections/PillarsTimeline";
+import { PillarsPinned } from "@/components/sections/PillarsPinned";
 import { Curriculum } from "@/components/sections/Curriculum";
 import { WhoFor } from "@/components/sections/WhoFor";
 import { Instructor } from "@/components/sections/Instructor";
@@ -17,7 +17,7 @@ export default function Page() {
       <Nav />
       <Hero />
       <SocialProof />
-      <PillarsTimeline />
+      <PillarsPinned />
       <Curriculum />
       <WhoFor />
       <Instructor />
