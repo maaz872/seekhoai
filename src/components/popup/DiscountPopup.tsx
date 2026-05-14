@@ -105,7 +105,7 @@ export function DiscountPopup() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: reducedMotion ? 0 : 0.35 }}
-          className="fixed inset-0 z-[60] grid place-items-center bg-base/85 px-4 backdrop-blur-xl"
+          className="fixed inset-0 z-[60] grid place-items-center bg-base/95 px-4 backdrop-blur-2xl"
           onClick={() => setOpen(false)}
         >
           <motion.div
@@ -113,7 +113,7 @@ export function DiscountPopup() {
             animate={reducedMotion ? { opacity: 1 } : { opacity: 1, scale: 1 }}
             exit={reducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.92 }}
             transition={reducedMotion ? { duration: 0.18 } : springModal}
-            className="relative w-full max-w-2xl overflow-hidden rounded-3xl border border-border-strong bg-elevated shadow-2xl"
+            className="relative max-h-[90vh] w-full max-w-2xl overflow-y-auto overflow-x-hidden rounded-3xl border border-border-strong bg-elevated shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -125,43 +125,47 @@ export function DiscountPopup() {
               <X className="size-4" />
             </button>
 
-            <div className="px-6 pt-8 md:px-10 md:pt-10">
-              <p className="eyebrow">[ {popup.eyebrow} ]</p>
-              <h2 id={titleId} className="mt-3 font-display text-display-md font-medium">
-                {popup.title}
-              </h2>
-            </div>
+            <div className="flex flex-col">
+              <div className="px-6 pt-4 md:px-10 md:pt-6">
+                <p className="eyebrow">[ {popup.eyebrow} ]</p>
+                <h2 id={titleId} className="mt-3 font-display text-display-md font-medium">
+                  {popup.title}
+                </h2>
+              </div>
 
-            <div className="mt-6 px-4 md:mt-8 md:px-10">
-              <CouponScene reducedMotion={reducedMotion} />
-            </div>
+              <div className="mt-4 px-4 md:mt-6 md:px-10">
+                <CouponScene reducedMotion={reducedMotion} />
+              </div>
 
-            <div className="px-6 py-6 md:px-10 md:py-8">
-              <p className="text-base text-text-secondary md:text-lg">
-                {popup.bodyBefore}{" "}
-                <span className="font-mono font-medium text-accent-warm">{popup.code}</span>{" "}
-                {popup.bodyAfter}{" "}
-                <span className="font-medium text-text-primary">{popup.discountedDisplay}</span>.{" "}
-                {popup.bodyEnd}
-              </p>
+              <div className="mt-4 px-6 md:mt-6 md:px-10">
+                <p className="text-base text-text-secondary md:text-lg">
+                  {popup.bodyBefore}{" "}
+                  <span className="font-mono font-medium text-accent-warm">{popup.code}</span>{" "}
+                  {popup.bodyAfter}{" "}
+                  <span className="font-medium text-text-primary">{popup.discountedDisplay}</span>.{" "}
+                  {popup.bodyEnd}
+                </p>
+              </div>
 
-              <Button
-                ref={ctaRef}
-                variant="warm"
-                size="lg"
-                className="mt-6 w-full"
-                onClick={handleClaim}
-              >
-                {popup.primaryCta}
-              </Button>
+              <div className="sticky bottom-0 mt-4 bg-elevated/95 px-6 pb-4 pt-3 backdrop-blur-sm md:static md:mt-6 md:bg-transparent md:px-10 md:pb-8 md:pt-0 md:backdrop-blur-none">
+                <Button
+                  ref={ctaRef}
+                  variant="warm"
+                  size="lg"
+                  className="w-full"
+                  onClick={handleClaim}
+                >
+                  {popup.primaryCta}
+                </Button>
 
-              <button
-                type="button"
-                onClick={() => setOpen(false)}
-                className="mx-auto mt-4 block text-sm text-text-tertiary transition-colors hover:text-text-secondary"
-              >
-                {popup.dismissCta}
-              </button>
+                <button
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  className="mx-auto mt-3 block text-sm text-text-tertiary transition-colors hover:text-text-secondary"
+                >
+                  {popup.dismissCta}
+                </button>
+              </div>
             </div>
           </motion.div>
         </motion.div>

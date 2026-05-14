@@ -27,14 +27,14 @@ export function CouponScene({ reducedMotion }: Props) {
 
   return (
     <div
-      className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-gradient-to-br from-[#11172a] via-[#0a0e1a] to-[#1a1024]"
+      className="relative h-56 w-full overflow-hidden rounded-2xl bg-gradient-to-br from-[#11172a] via-[#0a0e1a] to-[#1a1024] sm:h-64 md:h-72 lg:h-80"
       aria-hidden
     >
       <Canvas
         dpr={dpr}
-        camera={{ position: [0, 0, 4.6], fov: 45 }}
+        camera={{ position: [0, 0, 4.5], fov: 45 }}
         gl={{ antialias: true, alpha: true }}
-        style={{ touchAction: "none" }}
+        style={{ height: "100%", width: "100%", touchAction: "none" }}
       >
         <Suspense fallback={null}>
           <ambientLight intensity={0.2} />
