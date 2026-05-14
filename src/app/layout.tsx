@@ -3,8 +3,10 @@ import { Inter, Sora, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { CouponProvider } from "@/context/CouponContext";
 import { CheckoutProvider } from "@/context/CheckoutContext";
+import { TrailerProvider } from "@/context/TrailerContext";
 import { DiscountPopup } from "@/components/popup/DiscountPopup";
 import { CheckoutModal } from "@/components/checkout/CheckoutModal";
+import { TrailerModal } from "@/components/trailer/TrailerModal";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -74,9 +76,12 @@ export default function RootLayout({
       <body className="bg-base text-text-primary">
         <CouponProvider>
           <CheckoutProvider>
-            {children}
-            <DiscountPopup />
-            <CheckoutModal />
+            <TrailerProvider>
+              {children}
+              <DiscountPopup />
+              <CheckoutModal />
+              <TrailerModal />
+            </TrailerProvider>
           </CheckoutProvider>
         </CouponProvider>
       </body>

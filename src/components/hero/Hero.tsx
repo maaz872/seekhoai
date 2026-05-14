@@ -6,11 +6,13 @@ import { hero } from "@/content/content";
 import { Button } from "@/components/ui/Button";
 import { EmailCaptureForm } from "@/components/forms/EmailCaptureForm";
 import { HeroBackground } from "./HeroBackground";
-import { UDEMY_PROFILE_URL, WithUdemyLinks } from "@/components/ui/UdemyLink";
+import { WithUdemyLinks } from "@/components/ui/UdemyLink";
 import { useCheckout } from "@/context/CheckoutContext";
+import { useTrailer } from "@/context/TrailerContext";
 
 export function Hero() {
   const { open: openCheckout } = useCheckout();
+  const { open: openTrailer } = useTrailer();
   return (
     <section id="hero" className="relative isolate flex min-h-[100svh] items-center overflow-hidden bg-base">
       {/* Background: mesh gradient + animated SVG blobs + drifting particles */}
@@ -69,9 +71,7 @@ export function Hero() {
             variant="ghost"
             size="lg"
             icon={<Play className="size-4" fill="currentColor" />}
-            onClick={() =>
-              window.open(UDEMY_PROFILE_URL, "_blank", "noopener,noreferrer")
-            }
+            onClick={openTrailer}
           >
             {hero.ctas.secondary.label}
           </Button>
