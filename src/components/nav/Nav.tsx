@@ -7,11 +7,13 @@ import { cn } from "@/lib/cn";
 import { Button } from "@/components/ui/Button";
 import { MobileMenu } from "./MobileMenu";
 import { Menu } from "lucide-react";
+import { useCheckout } from "@/context/CheckoutContext";
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { scrollY } = useScroll();
+  const { open: openCheckout } = useCheckout();
 
   useMotionValueEvent(scrollY, "change", (v) => {
     setScrolled(v > 80);
@@ -49,7 +51,7 @@ export function Nav() {
           </ul>
 
           <div className="hidden md:block">
-            <Button variant="primary" size="sm" onClick={() => (window.location.hash = "pricing")}>
+            <Button variant="primary" size="sm" onClick={openCheckout}>
               {nav.cta.label}
             </Button>
           </div>

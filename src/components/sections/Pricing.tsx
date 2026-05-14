@@ -1,17 +1,16 @@
 "use client";
 
-import { useState } from "react";
 import { Check } from "lucide-react";
 import { Reveal, RevealItem } from "@/components/motion/Reveal";
 import { Button } from "@/components/ui/Button";
 import { pricing } from "@/content/content";
 import { useCoupon, priceWithCoupon } from "@/context/CouponContext";
-import { CheckoutModal } from "@/components/checkout/CheckoutModal";
+import { useCheckout } from "@/context/CheckoutContext";
 
 export function Pricing() {
-  const [open, setOpen] = useState(false);
+  const { open: openCheckout } = useCheckout();
   const { applied, code, discountPct } = useCoupon();
-  const { final, formatted } = priceWithCoupon(pricing.price, discountPct);
+  const { formatted } = priceWithCoupon(pricing.price, discountPct);
   const ctaLabel = applied ? `Enroll Now — ${formatted}` : pricing.cta.label;
 
   return (
@@ -68,7 +67,7 @@ export function Pricing() {
                 variant="warm"
                 size="lg"
                 className="mt-8"
-                onClick={() => setOpen(true)}
+                onClick={openCheckout}
               >
                 {ctaLabel}
               </Button>
@@ -88,8 +87,6 @@ export function Pricing() {
           </RevealItem>
         </Reveal>
       </div>
-
-      <CheckoutModal open={open} onClose={() => setOpen(false)} finalPrice={final} />
     </section>
   );
 }

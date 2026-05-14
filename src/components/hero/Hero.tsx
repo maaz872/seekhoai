@@ -7,8 +7,10 @@ import { Button } from "@/components/ui/Button";
 import { EmailCaptureForm } from "@/components/forms/EmailCaptureForm";
 import { HeroBackground } from "./HeroBackground";
 import { UDEMY_PROFILE_URL, WithUdemyLinks } from "@/components/ui/UdemyLink";
+import { useCheckout } from "@/context/CheckoutContext";
 
 export function Hero() {
+  const { open: openCheckout } = useCheckout();
   return (
     <section id="hero" className="relative isolate flex min-h-[100svh] items-center overflow-hidden bg-base">
       {/* Background: mesh gradient + animated SVG blobs + drifting particles */}
@@ -59,7 +61,7 @@ export function Hero() {
           <Button
             variant="warm"
             size="lg"
-            onClick={() => (window.location.hash = "pricing")}
+            onClick={openCheckout}
           >
             {hero.ctas.primary.label}
           </Button>

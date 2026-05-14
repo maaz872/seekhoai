@@ -145,26 +145,28 @@ export function CheckoutForm({ onSuccess, finalPrice }: Props) {
         />
       </div>
 
-      <Button
-        type="submit"
-        variant="warm"
-        size="lg"
-        className="mt-6 w-full"
-        disabled={isSubmitting}
-      >
-        {isSubmitting ? (
-          <>
-            <Loader2 className="size-4 animate-spin" />
-            Processing…
-          </>
-        ) : (
-          payLabel
-        )}
-      </Button>
+      <div className="sticky bottom-0 -mx-6 mt-6 bg-elevated/95 px-6 pb-4 pt-3 backdrop-blur-sm md:static md:mx-0 md:bg-transparent md:px-0 md:pb-0 md:pt-0 md:backdrop-blur-none">
+        <Button
+          type="submit"
+          variant="warm"
+          size="lg"
+          className="w-full"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? (
+            <>
+              <Loader2 className="size-4 animate-spin" />
+              Processing…
+            </>
+          ) : (
+            payLabel
+          )}
+        </Button>
 
-      <p className="text-center font-mono text-[0.7rem] uppercase tracking-[0.18em] text-text-tertiary">
-        Demo mode — no real payment processed
-      </p>
+        <p className="mt-3 text-center font-mono text-[0.7rem] uppercase tracking-[0.18em] text-text-tertiary">
+          Demo mode — no real payment processed
+        </p>
+      </div>
     </form>
   );
 }

@@ -2,7 +2,9 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Sora, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { CouponProvider } from "@/context/CouponContext";
+import { CheckoutProvider } from "@/context/CheckoutContext";
 import { DiscountPopup } from "@/components/popup/DiscountPopup";
+import { CheckoutModal } from "@/components/checkout/CheckoutModal";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -71,8 +73,11 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} ${sora.variable} ${mono.variable}`}>
       <body className="bg-base text-text-primary">
         <CouponProvider>
-          {children}
-          <DiscountPopup />
+          <CheckoutProvider>
+            {children}
+            <DiscountPopup />
+            <CheckoutModal />
+          </CheckoutProvider>
         </CouponProvider>
       </body>
     </html>

@@ -1,16 +1,15 @@
 "use client";
 
-import { useState } from "react";
 import { Reveal } from "@/components/motion/Reveal";
 import { Button } from "@/components/ui/Button";
 import { finalCTA, pricing } from "@/content/content";
 import { useCoupon, priceWithCoupon } from "@/context/CouponContext";
-import { CheckoutModal } from "@/components/checkout/CheckoutModal";
+import { useCheckout } from "@/context/CheckoutContext";
 
 export function FinalCTA() {
-  const [open, setOpen] = useState(false);
+  const { open: openCheckout } = useCheckout();
   const { applied, discountPct } = useCoupon();
-  const { final, formatted } = priceWithCoupon(pricing.price, discountPct);
+  const { formatted } = priceWithCoupon(pricing.price, discountPct);
   const label = applied ? `Enroll Now — ${formatted}` : finalCTA.cta.label;
 
   return (
@@ -40,14 +39,12 @@ export function FinalCTA() {
             {finalCTA.body}
           </p>
           <div className="mt-10 flex justify-center">
-            <Button variant="warm" size="lg" onClick={() => setOpen(true)}>
+            <Button variant="warm" size="lg" onClick={openCheckout}>
               {label}
             </Button>
           </div>
         </Reveal>
       </div>
-
-      <CheckoutModal open={open} onClose={() => setOpen(false)} finalPrice={final} />
     </section>
   );
 }

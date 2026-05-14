@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import { nav, brand } from "@/content/content";
 import { Button } from "@/components/ui/Button";
+import { useCheckout } from "@/context/CheckoutContext";
 
 interface Props {
   open: boolean;
@@ -12,6 +13,8 @@ interface Props {
 }
 
 export function MobileMenu({ open, onClose }: Props) {
+  const { open: openCheckout } = useCheckout();
+
   useEffect(() => {
     if (!open) return;
     const original = document.body.style.overflow;
@@ -70,7 +73,7 @@ export function MobileMenu({ open, onClose }: Props) {
               className="w-full"
               onClick={() => {
                 onClose();
-                window.location.hash = "pricing";
+                openCheckout();
               }}
             >
               {nav.cta.label}

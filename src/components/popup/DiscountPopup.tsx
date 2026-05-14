@@ -17,12 +17,17 @@ const CouponScene = dynamic(
 );
 
 export function DiscountPopup() {
-  const shouldShow = usePopupTriggers();
+  const { shouldShow, onDismiss, onClaim } = usePopupTriggers();
   const [open, setOpen] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const { apply } = useCoupon();
   const titleId = "discount-popup-title";
   const ctaRef = useRef<HTMLButtonElement>(null);
+
+  const handleDismiss = () => {
+    setOpen(false);
+    onDismiss();
+  };
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -47,7 +52,10 @@ export function DiscountPopup() {
     const t = setTimeout(() => ctaRef.current?.focus(), 50);
 
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") {
+        setOpen(false);
+        onDismiss();
+      }
       // Simple focus trap
       if (e.key === "Tab") {
         const focusables = document
@@ -72,10 +80,11 @@ export function DiscountPopup() {
       document.removeEventListener("keydown", onKey);
       clearTimeout(t);
     };
-  }, [open]);
+  }, [open, onDismiss]);
 
   const handleClaim = (e: React.MouseEvent<HTMLButtonElement>) => {
     apply(popup.code, 0.2);
+    onClaim();
     // Small confetti from the button
     const rect = e.currentTarget.getBoundingClientRect();
     const x = (rect.left + rect.width / 2) / window.innerWidth;
@@ -106,7 +115,7 @@ export function DiscountPopup() {
           exit={{ opacity: 0 }}
           transition={{ duration: reducedMotion ? 0 : 0.35 }}
           className="fixed inset-0 z-[60] grid place-items-center bg-base/95 px-4 backdrop-blur-2xl"
-          onClick={() => setOpen(false)}
+          onClick={handleDismiss}
         >
           <motion.div
             initial={reducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.9 }}
@@ -119,7 +128,7 @@ export function DiscountPopup() {
             <div className="pointer-events-none sticky top-0 z-20 h-0">
               <button
                 type="button"
-                onClick={() => setOpen(false)}
+                onClick={handleDismiss}
                 className="pointer-events-auto absolute right-4 top-4 grid size-9 place-items-center rounded-full border border-border-subtle bg-base/60 text-text-secondary backdrop-blur-sm transition-colors hover:text-text-primary"
                 aria-label="Close"
               >
@@ -162,7 +171,7 @@ export function DiscountPopup() {
 
                 <button
                   type="button"
-                  onClick={() => setOpen(false)}
+                  onClick={handleDismiss}
                   className="mx-auto mt-3 block text-sm text-text-tertiary transition-colors hover:text-text-secondary"
                 >
                   {popup.dismissCta}
